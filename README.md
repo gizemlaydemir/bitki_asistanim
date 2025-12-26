@@ -1,16 +1,31 @@
-# bitki_asistanim
+# 🌱 Bitki Asistanım
 
-A new Flutter project.
+Bitki Asistanım, kullanıcıların bitkilerini daha kolay ve düzenli şekilde takip edebilmesi için geliştirilmiş bir *Flutter mobil uygulamasıdır*.  
+Uygulama sayesinde bitkilerin sulama sıklığı, türü ve temel bilgileri kayıt altına alınabilir.
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## 🚀 Proje Amacı
 
-A few resources to get you started if this is your first Flutter project:
+Bu proje, Mobil Programlama dersi kapsamında Flutter kullanılarak:
+- Mobil uygulama geliştirme mantığını öğrenmek
+- Form kullanımı, sayfa geçişleri ve veri yönetimini uygulamak
+- Temiz ve düzenli bir proje yapısı oluşturmak  
+amacıyla geliştirilmiştir.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+---
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 🛠️ Kullanılan Teknolojiler
+
+- *Flutter*
+- *Dart*
+- *Material Design*
+- Android Studio / VS Code
+
+---
+
+## ⚙️ Kurulum ve Çalıştırma
+
+1. Bu repoyu bilgisayarına klonla:
+   ```bash
+   git clone https://github.com/gizemlaydemir/bitki_asistanim.git
