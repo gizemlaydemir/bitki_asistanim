@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import '../theme/app_theme.dart';
 import '../main.dart'; // AppLanguage enum için
-
 import 'home_page.dart';
 import 'calendar_page.dart';
 import 'today_page.dart';

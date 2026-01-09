@@ -119,7 +119,7 @@ class _AddPlantPageState extends State<AddPlantPage> {
               // 🌿 Bitki adı
               TextFormField(
                 controller: _nameController,
-                keyboardType: TextInputType.name, // ✅ Türkçe/isim uyumlu
+                keyboardType: TextInputType.name, 
                 textCapitalization: TextCapitalization.words,
                 enableSuggestions: true,
                 autocorrect: true,

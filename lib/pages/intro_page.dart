@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../main.dart';
-import '../theme/app_theme.dart';
+
 
 class IntroPage extends StatefulWidget {
   final ThemeMode initialThemeMode;
@@ -40,10 +40,12 @@ class _IntroPageState extends State<IntroPage> {
           child: Container(
             padding: const EdgeInsets.all(22),
             decoration: BoxDecoration(
+              // ignore: deprecated_member_use
               color: Theme.of(context).cardColor.withOpacity(0.95),
               borderRadius: BorderRadius.circular(28),
               boxShadow: [
                 BoxShadow(
+                  // ignore: deprecated_member_use
                   color: Colors.black.withOpacity(0.10),
                   blurRadius: 16,
                   offset: const Offset(0, 4),

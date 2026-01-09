@@ -20,7 +20,7 @@ class _AiPageState extends State<AiPage> {
   int? _limit;
 
   Future<void> _getAdvice() async {
-    final plantName = _plantController.text.trim();
+    final rawPlantName = _plantController.text.trim();
     final problem = _problemController.text.trim();
 
     if (problem.isEmpty) {
@@ -31,24 +31,36 @@ class _AiPageState extends State<AiPage> {
       return;
     }
 
+    final isTr = Localizations.localeOf(context).languageCode == 'tr';
+
+    // ✅ AiService String istiyor -> null değil String göndereceğiz
+    final plantNameToSend = rawPlantName; // boş olabilir
+
+    // ✅ Bitki adı varsa, AI mutlaka görsün diye problem içine de ekle
+    final mergedProblem = rawPlantName.isEmpty
+        ? problem
+        : (isTr
+              ? 'Bitki adı: $rawPlantName\nSorun: $problem'
+              : 'Plant name: $rawPlantName\nProblem: $problem');
+
+    // ✅ Debug (istersen sonra silebilirsin)
+    debugPrint('PLANT NAME = "$rawPlantName"');
+    debugPrint('PROBLEM    = "$problem"');
+    debugPrint('MERGED     = "$mergedProblem"');
+
     setState(() {
       _loading = true;
       _error = null;
       _result = null;
-      // eski değerleri ekranda tutmak istersen bunları silme, ben temizledim:
-      // _remaining = null;
-      // _limit = null;
     });
 
     try {
-      final isTr = Localizations.localeOf(context).languageCode == 'tr';
-
       final resp = await AiService.plantAdvice(
-        plantName: plantName.isEmpty ? 'Bitki' : plantName,
-        problem: problem,
+        plantName: plantNameToSend, // ✅ artık String
+        problem: mergedProblem, // ✅ AI kesin bitki adını görecek
         isTr: isTr,
-        detailed: true, // 🔥 AI kullan
-        userId: 'gizem', // 👤 kullanıcı id
+        detailed: true,
+        userId: 'gizem',
       );
 
       setState(() {
@@ -60,7 +72,6 @@ class _AiPageState extends State<AiPage> {
       final msg = e.toString();
 
       setState(() {
-        // 429 = limit doldu
         if (msg.contains('429') || msg.toLowerCase().contains('limit')) {
           _error = 'Bugünkü AI hakkın doldu 🌿';
         } else {
@@ -127,7 +138,6 @@ class _AiPageState extends State<AiPage> {
 
             const SizedBox(height: 12),
 
-            // ✅ Kalan hak göstergesi
             if (_remaining != null && _limit != null)
               Align(
                 alignment: Alignment.centerLeft,

@@ -251,6 +251,7 @@ class _DonationPageState extends State<DonationPage> {
                       borderRadius: BorderRadius.circular(16),
                       boxShadow: [
                         BoxShadow(
+                          // ignore: deprecated_member_use
                           color: Colors.black.withOpacity(0.05),
                           blurRadius: 8,
                           offset: const Offset(0, 2),
@@ -308,7 +309,9 @@ class _DonationPageState extends State<DonationPage> {
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
+                          // ignore: deprecated_member_use
                           AppColors.lightGreen.withOpacity(0.9),
+                          // ignore: deprecated_member_use
                           AppColors.midGreen.withOpacity(0.9),
                         ],
                         begin: Alignment.topLeft,
@@ -317,6 +320,7 @@ class _DonationPageState extends State<DonationPage> {
                       borderRadius: BorderRadius.circular(18),
                       boxShadow: [
                         BoxShadow(
+                          // ignore: deprecated_member_use
                           color: Colors.black.withOpacity(0.1),
                           blurRadius: 10,
                           offset: const Offset(0, 4),
@@ -414,6 +418,7 @@ class _DonationPageState extends State<DonationPage> {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
+            // ignore: deprecated_member_use
             color: Colors.black.withOpacity(0.05),
             blurRadius: 8,
             offset: const Offset(0, 2),

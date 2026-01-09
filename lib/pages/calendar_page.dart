@@ -97,6 +97,7 @@ class _CalendarPageState extends State<CalendarPage> {
                         ),
                         padding: const EdgeInsets.all(14),
                         decoration: BoxDecoration(
+                          // ignore: deprecated_member_use
                           color: Theme.of(context).cardColor.withOpacity(0.95),
                           borderRadius: BorderRadius.circular(16),
                         ),

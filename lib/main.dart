@@ -5,7 +5,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:sqflite/sqflite.dart'; // databaseFactory için gerekir
+// databaseFactory için gerekir
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import 'app_navigator.dart'; // navigatorKey burada
@@ -52,10 +52,25 @@ Future<void> main() async {
   }
 
   await PlantDatabase.instance.database;
+
+  // ✅ Bildirimleri başlat
   await NotificationService.instance.init();
 
   // ✅ Uygulama açılınca: prefs + bugünkü görev sayısına göre bildirimi kur/iptal et
-  await _syncDailySummaryFromPrefs(prefs, initialLanguage);
+  // ⚠️ Android "exact alarm" izni yoksa burada crash oluyordu.
+  // ✅ Artık hata olsa bile uygulama açılacak.
+  try {
+    await _syncDailySummaryFromPrefs(prefs, initialLanguage);
+  } catch (e, st) {
+    debugPrint('❌ Daily summary notification sync failed: $e');
+    debugPrint('$st');
+
+    // İstersen tamamen güvenli olması için:
+    // Hata olunca bildirimi iptal etmeyi de deneyebiliriz (try içinde):
+    try {
+      await NotificationService.instance.cancelTodaySummary();
+    } catch (_) {}
+  }
 
   runApp(
     MyApp(

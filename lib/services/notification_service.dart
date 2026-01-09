@@ -92,7 +92,12 @@ class NotificationService {
       body,
       scheduled,
       details,
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+
+      // ✅ CRASH'i çözen değişiklik:
+      // exactAllowWhileIdle -> inexactAllowWhileIdle
+      // Böylece Android "exact alarms not permitted" hatası vermez.
+      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
       matchDateTimeComponents: DateTimeComponents.time,
