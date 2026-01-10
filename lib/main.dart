@@ -16,6 +16,9 @@ import 'pages/main_scaffold.dart';
 import 'pages/intro_page.dart';
 import 'pages/today_page.dart';
 
+// ✅ EKLENDİ: Tüm Bitkiler sayfası
+import 'pages/plants_page.dart';
+
 enum AppLanguage { tr, en }
 
 // ---------------- PREFS (APP) ----------------
@@ -24,7 +27,6 @@ const _kLangKey = 'appLanguage'; // 'tr' / 'en'
 const _kStartedKey = 'appStarted'; // intro geçildi mi
 
 // ---------------- PREFS (NOTIF) ----------------
-// SettingsPage ile birebir aynı olmalı
 const _kNotifEnabledKey = 'notifEnabled';
 const _kNotifHourKey = 'notifHour';
 const _kNotifMinuteKey = 'notifMinute';
@@ -34,7 +36,6 @@ Future<void> main() async {
 
   await initializeDateFormatting('tr_TR', null);
 
-  // ✅ Kalıcı ayarları oku
   final prefs = await SharedPreferences.getInstance();
   final themeIndex = prefs.getInt(_kThemeKey) ?? 0;
   final langStr = prefs.getString(_kLangKey) ?? 'tr';
@@ -43,7 +44,6 @@ Future<void> main() async {
   final initialTheme = themeIndex == 1 ? ThemeMode.dark : ThemeMode.light;
   final initialLanguage = (langStr == 'en') ? AppLanguage.en : AppLanguage.tr;
 
-  // ✅ Desktop için sqflite ffi (Platform yerine defaultTargetPlatform)
   if (!kIsWeb &&
       (defaultTargetPlatform == TargetPlatform.windows ||
           defaultTargetPlatform == TargetPlatform.linux)) {
@@ -53,20 +53,13 @@ Future<void> main() async {
 
   await PlantDatabase.instance.database;
 
-  // ✅ Bildirimleri başlat
   await NotificationService.instance.init();
 
-  // ✅ Uygulama açılınca: prefs + bugünkü görev sayısına göre bildirimi kur/iptal et
-  // ⚠️ Android "exact alarm" izni yoksa burada crash oluyordu.
-  // ✅ Artık hata olsa bile uygulama açılacak.
   try {
     await _syncDailySummaryFromPrefs(prefs, initialLanguage);
   } catch (e, st) {
     debugPrint('❌ Daily summary notification sync failed: $e');
     debugPrint('$st');
-
-    // İstersen tamamen güvenli olması için:
-    // Hata olunca bildirimi iptal etmeyi de deneyebiliriz (try içinde):
     try {
       await NotificationService.instance.cancelTodaySummary();
     } catch (_) {}
@@ -81,7 +74,6 @@ Future<void> main() async {
   );
 }
 
-/// TodayPage mantığıyla aynı: "bugün veya gecikmiş" olanları sayar
 Future<int> _calcTodayDueCount() async {
   final allPlants = await PlantDatabase.instance.getAllPlants();
 
@@ -99,7 +91,7 @@ Future<int> _calcTodayDueCount() async {
 
     final diff = nextDate.difference(today).inDays;
 
-    if (diff <= 0) count++; // bugün veya gecikmiş
+    if (diff <= 0) count++;
   }
 
   return count;
@@ -127,8 +119,6 @@ Future<void> _syncDailySummaryFromPrefs(
 
   final isTr = language == AppLanguage.tr;
 
-  // ⚠️ NotificationService’in bu metodu olmalı:
-  // scheduleDailyTodaySummary({count,isTr,hour,minute})
   await NotificationService.instance.scheduleDailyTodaySummary(
     count: count,
     isTr: isTr,
@@ -185,10 +175,10 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       _themeMode = theme;
       _language = language;
-      _started = true; // intro geçildi
+      _started = true;
     });
 
-    _saveAppPrefs(); // ✅ kalıcı kaydet
+    _saveAppPrefs();
   }
 
   @override
@@ -216,7 +206,11 @@ class _MyAppState extends State<MyApp> {
       ],
       supportedLocales: const [Locale('tr', 'TR'), Locale('en', 'US')],
 
-      routes: {'/today': (_) => const TodayPage()},
+      // ✅ DÜZELTİLDİ
+      routes: {
+        '/today': (_) => const TodayPage(),
+        '/plants': (_) => const PlantsPage(),
+      },
 
       home: AnimatedSwitcher(
         duration: const Duration(milliseconds: 600),

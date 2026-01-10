@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 class AiResponse {
@@ -19,29 +20,79 @@ class AiService {
     bool detailed = false,
     String userId = 'anon',
   }) async {
+    final uri = Uri.parse('$_baseUrl/plant-advice');
+
+    final pn = plantName.trim();
+    final pr = problem.trim();
+
+    // ✅ Backend hangi key'i bekliyorsa yakalasın diye çoklu key gönderiyoruz
+    final Map<String, dynamic> body = {
+      // Plant name alternatifleri
+      'plantName': pn,
+      'plant': pn,
+      'plant_name': pn,
+      'bitkiAdi': pn,
+      'bitki_adı': pn,
+
+      // Problem alternatifleri (bazı backend "issue" veya "question" bekleyebilir)
+      'problem': pr,
+      'issue': pr,
+      'question': pr,
+
+      // Dil alternatifleri
+      'language': isTr ? 'tr' : 'en',
+      'lang': isTr ? 'tr' : 'en',
+
+      'detailed': detailed,
+      'userId': userId,
+    };
+
+    debugPrint('📦 AI REQUEST -> $uri');
+    debugPrint('📦 AI BODY    -> ${jsonEncode(body)}');
+
     final resp = await http.post(
-      Uri.parse('$_baseUrl/plant-advice'),
+      uri,
       headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({
-        'plantName': plantName,
-        'problem': problem,
-        'language': isTr ? 'tr' : 'en',
-        'detailed': detailed,
-        'userId': userId,
-      }),
+      body: jsonEncode(body),
     );
 
-    final data = jsonDecode(resp.body);
+    debugPrint('📩 AI STATUS  -> ${resp.statusCode}');
+    debugPrint('📩 AI RAW     -> ${resp.body}');
 
-    // Server 429 döndüğünde burada da yakalayalım:
-    if (resp.statusCode != 200 || data['success'] != true) {
-      throw Exception(data['message'] ?? data['error'] ?? 'Server error');
+    Map<String, dynamic> data;
+    try {
+      final decoded = jsonDecode(resp.body);
+      data = (decoded is Map<String, dynamic>)
+          ? decoded
+          : <String, dynamic>{'raw': decoded};
+    } catch (_) {
+      throw Exception('Server response is not JSON: ${resp.body}');
     }
 
-    return AiResponse(
-      advice: (data['advice'] ?? '').toString(),
-      remaining: (data['remaining'] is int) ? data['remaining'] as int : null,
-      limit: (data['limit'] is int) ? data['limit'] as int : null,
-    );
+    final success = data['success'];
+    final isSuccess = success == true || success == 'true' || success == 1;
+
+    if (resp.statusCode != 200 || !isSuccess) {
+      final msg = (data['message'] ?? data['error'] ?? 'Server error')
+          .toString();
+      throw Exception(msg);
+    }
+
+    final advice = (data['advice'] ?? data['result'] ?? data['message'] ?? '')
+        .toString();
+
+    int? remaining;
+    int? limit;
+
+    final r = data['remaining'];
+    final l = data['limit'];
+
+    if (r is int) remaining = r;
+    if (l is int) limit = l;
+
+    remaining ??= int.tryParse('$r');
+    limit ??= int.tryParse('$l');
+
+    return AiResponse(advice: advice, remaining: remaining, limit: limit);
   }
 }

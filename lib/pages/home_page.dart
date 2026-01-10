@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import '../database/plant_database.dart';
@@ -21,6 +23,9 @@ class _HomePageState extends State<HomePage> {
   bool _loading = true;
   int _todayNeedWaterCount = 0;
 
+  // ✅ tüm bitkiler listesi
+  List<Plant> _plants = [];
+
   @override
   void initState() {
     super.initState();
@@ -42,6 +47,7 @@ class _HomePageState extends State<HomePage> {
 
     if (!mounted) return;
     setState(() {
+      _plants = plants;
       _todayNeedWaterCount = count;
       _loading = false;
     });
@@ -82,11 +88,10 @@ class _HomePageState extends State<HomePage> {
 
     if (newPlant != null) {
       await PlantDatabase.instance.insertPlant(newPlant);
-      await _loadDashboardInfo(); // ✅ Home özetini güncelle
+      await _loadDashboardInfo();
     }
   }
 
-  /// ✅ Büyük dashboard kartı
   Widget _dashboardCard({
     required IconData icon,
     required String title,
@@ -184,6 +189,187 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Widget _fallbackIconBox() {
+    return Container(
+      width: 42,
+      height: 42,
+      decoration: BoxDecoration(
+        color: AppColors.midGreen.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(14),
+      ),
+      child: const Icon(Icons.local_florist, color: AppColors.midGreen),
+    );
+  }
+
+  // ✅ “Tüm Bitkilerim” bölümü
+  Widget _allPlantsSection(bool isTr) {
+    final now = DateTime.now();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              isTr
+                  ? 'Tüm Bitkilerim (${_plants.length})'
+                  : 'All My Plants (${_plants.length})',
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
+            ),
+            TextButton(
+              onPressed: () {
+                // ✅ Tüm bitkilerin göründüğü sayfa
+                Navigator.pushNamed(context, '/plants');
+              },
+              child: Text(isTr ? 'Tümünü gör' : 'See all'),
+            ),
+          ],
+        ),
+        const SizedBox(height: 10),
+
+        if (_loading)
+          const SizedBox(
+            height: 120,
+            child: Center(child: CircularProgressIndicator()),
+          )
+        else if (_plants.isEmpty)
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(14),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(18),
+              color: Theme.of(context).cardColor.withValues(alpha: 0.95),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.06),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Row(
+              children: [
+                const Icon(Icons.local_florist, color: AppColors.midGreen),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Text(
+                    isTr
+                        ? 'Henüz bitki eklemedin. + butonuyla ekleyebilirsin 🌱'
+                        : "You haven't added any plants yet. Tap + to add 🌱",
+                    style: const TextStyle(fontWeight: FontWeight.w600),
+                  ),
+                ),
+              ],
+            ),
+          )
+        else
+          SizedBox(
+            height: 132,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: _plants.length,
+              itemBuilder: (context, index) {
+                final p = _plants[index];
+
+                // Sulamaya kaç gün kaldı?
+                final diffDays = now.difference(p.lastWatered).inDays;
+                final remaining = p.frequency - diffDays;
+
+                final subtitle = remaining <= 0
+                    ? (isTr ? 'Bugün sulanır' : 'Water today')
+                    : (isTr ? '$remaining gün sonra' : 'In $remaining days');
+
+                // ✅ Bitki adı (Plant modelinde name varsa)
+                final plantName = p.name;
+
+                // ✅ Görsel (Plant modelinde imagePath varsa)
+                final String? imagePath = p.imagePath;
+
+                Widget leading = _fallbackIconBox();
+                if (imagePath != null && imagePath.isNotEmpty) {
+                  final file = File(imagePath);
+                  if (file.existsSync()) {
+                    leading = ClipRRect(
+                      borderRadius: BorderRadius.circular(14),
+                      child: Image.file(
+                        file,
+                        width: 42,
+                        height: 42,
+                        fit: BoxFit.cover,
+                      ),
+                    );
+                  }
+                }
+
+                return InkWell(
+                  borderRadius: BorderRadius.circular(18),
+                  onTap: () {
+                    // İstersen burada bitki detay sayfasına gidebilir.
+                  },
+                  child: Container(
+                    width: 160,
+                    margin: const EdgeInsets.only(right: 12),
+                    padding: const EdgeInsets.all(14),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(18),
+                      color: Theme.of(
+                        context,
+                      ).cardColor.withValues(alpha: 0.95),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.06),
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                      border: Border.all(
+                        color: AppColors.midGreen.withValues(alpha: 0.15),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        leading,
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                plantName,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 14,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                subtitle,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: Colors.black.withValues(alpha: 0.60),
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final isTr = Localizations.localeOf(context).languageCode == 'tr';
@@ -219,15 +405,15 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               child: _loading
-                  ? const Row(
+                  ? Row(
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           width: 18,
                           height: 18,
                           child: CircularProgressIndicator(strokeWidth: 2),
                         ),
-                        SizedBox(width: 10),
-                        Text('Yükleniyor...'),
+                        const SizedBox(width: 10),
+                        Text(isTr ? 'Yükleniyor...' : 'Loading...'),
                       ],
                     )
                   : Row(
@@ -248,8 +434,12 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
             ),
+
             const SizedBox(height: 16),
             _buildDashboard(isTr),
+
+            const SizedBox(height: 18),
+            _allPlantsSection(isTr),
           ],
         ),
       ),
