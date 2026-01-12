@@ -16,7 +16,6 @@ import 'pages/main_scaffold.dart';
 import 'pages/intro_page.dart';
 import 'pages/today_page.dart';
 
-// ✅ EKLENDİ: Tüm Bitkiler sayfası
 import 'pages/plants_page.dart';
 
 enum AppLanguage { tr, en }
