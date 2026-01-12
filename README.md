@@ -3,6 +3,7 @@
 Bitki Asistanım, kullanıcıların bitkilerini daha düzenli ve bilinçli şekilde takip edebilmesi için geliştirilmiş Flutter tabanlı bir mobil uygulamadır.
 Uygulama; bitki bilgilerini yerel veritabanında saklar, sulama zamanlarını planlar ve yapay zekâ desteğiyle bakım önerileri sunar.
 
+
 🎥 YouTube Tanıtım Videosu
 
 📺 Proje Tanıtım Videosu:
@@ -11,6 +12,7 @@ Uygulama; bitki bilgilerini yerel veritabanında saklar, sulama zamanlarını pl
 Videoda; uygulamanın amacı, ekranlar, veritabanı yapısı ve yapay zekâ desteği anlatılmaktadır.
 
 🎯 Amaç ve Senaryo
+
 ❓ Bu uygulama kimin işine yarar?
 
 Bu uygulama;
