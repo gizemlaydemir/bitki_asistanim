@@ -1,7 +1,14 @@
 🌱 Bitki Asistanım
 
-Bitki Asistanım, kullanıcıların bitkilerini daha düzenli, bilinçli ve kolay şekilde takip edebilmesi için geliştirilmiş bir Flutter tabanlı mobil uygulamadır.
-Uygulama; bitki bilgilerini yerel veritabanında saklar, sulama zamanlarını planlar ve yapay zekâ desteğiyle bitki bakımında rehberlik eder.
+Bitki Asistanım, kullanıcıların bitkilerini daha düzenli ve bilinçli şekilde takip edebilmesi için geliştirilmiş Flutter tabanlı bir mobil uygulamadır.
+Uygulama; bitki bilgilerini yerel veritabanında saklar, sulama zamanlarını planlar ve yapay zekâ desteğiyle bakım önerileri sunar.
+
+🎥 YouTube Tanıtım Videosu
+
+📺 Proje Tanıtım Videosu:
+👉 https://youtu.be/OsXBK-rbeMc?si=QolXSdOY6Yt7vO5g
+
+Videoda; uygulamanın amacı, ekranlar, veritabanı yapısı ve yapay zekâ desteği anlatılmaktadır.
 
 🎯 Amaç ve Senaryo
 ❓ Bu uygulama kimin işine yarar?
@@ -20,23 +27,23 @@ kullanıcılar için geliştirilmiştir.
 
 ❓ Hangi problemi çözer?
 
-Bitki sahiplerinin en sık yaşadığı problemler:
+Bitki sahiplerinin sık yaşadığı sorunlar:
 
-Bitkilerin ne zaman sulanacağının unutulması
+Sulama zamanlarının unutulması
 
 Bakım süreçlerinin düzensiz olması
 
-Yaprak sararması, lekelenme gibi sorunlarda ne yapılacağının bilinmemesi
+Bitki problemlerinde ne yapılacağının bilinmemesi
 
 Bitki Asistanım;
 
-Bitkilere ait bilgileri veritabanında düzenli şekilde saklayarak
+Bitki bilgilerini veritabanında düzenli şekilde saklayarak,
 
-Sulama zamanlarını otomatik hesaplayarak
+Sulama zamanlarını otomatik hesaplayarak,
 
 Yapay zekâ destekli öneriler sunarak
 
-bu problemleri ortadan kaldırır.
+bu problemleri çözer.
 
 ❓ Nerede ve nasıl kullanılır?
 
@@ -48,19 +55,19 @@ Bitkilerini uygulamaya ekler
 
 Sulama sıklığını belirler
 
-Günlük ve takvim ekranlarından bakım planını takip eder
+Günlük ve takvim ekranlarından bakım takibini yapar
 
-Bitkide bir sorun olduğunda AI Asistan’dan destek alır
+Bir sorun yaşadığında AI Asistan’dan destek alır
 
-Bu sayede bitki bakımı daha düzenli ve bilinçli hale gelir.
+Bu sayede bitki bakımı daha düzenli hale gelir.
 
 🤖 Yapay Zekâ Desteği
 
-Uygulamada yer alan Bitki Asistanı (AI) bölümü sayesinde kullanıcı:
+Bitki Asistanı (AI) sayesinde kullanıcı;
 
-Bitki adını (isteğe bağlı),
+Bitki adını (isteğe bağlı)
 
-Yaşadığı problemi (ör. yaprak sararması, lekelenme)
+Yaşadığı problemi
 
 yazarak yapay zekâ destekli bakım önerileri alabilir.
 
@@ -68,31 +75,28 @@ Teknik yapı:
 
 Flutter frontend
 
-Node.js tabanlı backend
+Node.js backend
 
-OpenAI API entegrasyonu
+OpenAI API
 
-Günlük kullanım limiti ile kontrollü AI erişimi
+Günlük kullanım limiti
 
-Not: Yapay zekâ kısmı danışmanlık amaçlıdır, kesin tanı iddiası içermez.
+Not: Yapay zekâ öneri amaçlıdır, kesin tanı içermez.
 
 🗄️ Veritabanı Yapısı
 
-Uygulamada yerel veritabanı (SQLite) kullanılmıştır.
+Uygulamada SQLite kullanılmıştır.
 
-Veritabanı üzerinden:
+Veritabanı ile:
 
-Bitki ekleme
-
-Bitki listeleme
+Bitki ekleme ve listeleme
 
 Sulama bilgilerini saklama
 
 Son sulama tarihine göre hesaplama
 
-işlemleri yapılmaktadır.
-
-Bu sayede kullanıcı verileri uygulama kapatılsa bile kaybolmaz.
+işlemleri yapılır.
+Kullanıcı verileri uygulama kapatılsa bile korunur.
 
 🛠️ Kullanılan Teknolojiler
 
@@ -104,56 +108,12 @@ SQLite (sqflite)
 
 Material Design
 
-Node.js (AI backend)
+Node.js
 
 OpenAI API
 
-VS Code / Android Studio
 
-✨ Uygulama Özellikleri
 
-Bitki ekleme ve listeleme
-
-Sulama sıklığı belirleme
-
-Günlük ve takvim görünümü
-
-Bildirim sistemi
-
-Yapay zekâ destekli bitki danışmanı
-
-Kullanıcı dostu ve sade arayüz
-
-🖼️ Uygulama Ekran Görüntüleri
-
-Aşağıya 9 adet ekran görüntüsünü ekleyebilirsin:
-
-![Ekran 1](indirilenler/homepage.png)
-![Ekran 2](indirilenler/addplantpage.png)
-![Ekran 3](indirilenler/plantdate.png)
-![Ekran 4](indirilenler/todaypage.png)
-![Ekran 5](indirilenler/calenderpage.png)
-![Ekran 6](indirilenler/donatepage.png)
-![Ekran 7](indirilenler/settingpage.png)
-![Ekran 8](indirilenler/notespage.png)
-![Ekran 9](indirilenler/aipage.png)
-
-🎥 YouTube Tanıtım Videosu
-
-📺 Proje Tanıtım Videosu:
-👉 https://www.youtube.com/VIDEO_LINKİNİ_BURAYA_YAZ
-
-Videoda:
-
-Uygulamanın amacı
-
-Ekranların tanıtımı
-
-Veritabanı işlemleri (ekleme, listeleme)
-
-Yapay zekâ desteği
-
-detaylı şekilde anlatılmıştır.
 
 ⚙️ Kurulum ve Çalıştırma
 git clone https://github.com/gizemlaydemir/bitki_asistanim.git
