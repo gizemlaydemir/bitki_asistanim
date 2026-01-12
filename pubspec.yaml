@@ -40,7 +40,7 @@ flutter:
 
   assets:
     - assets/sounds/water.mp3
-    - assets/icon/ikonnn.png   # 👈 SENİN İKON
+    - assets/icon/ikonnn.png   
 
 flutter_icons:
   android: true
