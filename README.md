@@ -5,15 +5,6 @@ Uygulama sayesinde bitkilerin sulama sıklığı, türü ve temel bilgileri kay�
 
 ---
 
-## 🎯 Proje Amacı
-
-Bu proje, Mobil Programlama dersi kapsamında Flutter kullanılarak:
-
-- Mobil uygulama geliştirme mantığını öğrenmek
-- Form kullanımı, sayfa geçişleri ve veri yönetimini uygulamak
-- Temiz ve düzenli bir proje yapısı oluşturmak  
-
-amacıyla geliştirilmiştir.
 
 ## 🎯 Amaç ve Senaryo
 
